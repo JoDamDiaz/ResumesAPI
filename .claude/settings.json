@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker info *)",
+      "Bash(docker compose *)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s http://localhost:8000/api/v1/users/)",
+      "Bash(curl -s http://localhost:8000/api/v1/users/1)",
+      "Bash(docker exec *)",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(u['nombre'], '|', u['ubicacion']\\) for u in data]\")",
+      "Bash(curl -s http://localhost:8000/api/v1/experiencias/user/1)",
+      "Bash(python3 -c \"import sys,json; exps=json.load\\(sys.stdin\\); [print\\(f\\\\\"  [{e['id']}] {e['cargo']} @ {e['empresa']}: {len\\(e['funciones']\\)} funciones\\\\\"\\) for e in exps]\")",
+      "Bash(curl -s -X POST http://localhost:8000/api/v1/experiencias/ -H 'Content-Type: application/json' -d '{\"user_id\":2,\"cargo\":\"Tech Lead\",\"empresa\":\"Nueva Corp\",\"tiempo_inicio\":\"2024-01-01\",\"funciones\":[{\"descripcion\":\"Definir arquitectura del sistema\",\"orden\":1},{\"descripcion\":\"Revisión de código y mentoring\",\"orden\":2}]}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X DELETE http://localhost:8000/api/v1/funciones/1)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
