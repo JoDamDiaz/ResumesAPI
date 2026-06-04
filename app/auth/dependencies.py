@@ -15,13 +15,13 @@ def get_current_user(
     db: Session = Depends(get_db),
 ) -> User:
     try:
-        user_id = decode_token(credentials.credentials)
+        claims = decode_token(credentials.credentials)
     except jwt.ExpiredSignatureError:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token expirado")
     except jwt.PyJWTError:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token inválido")
 
-    user = UserRepository(db).get_by_id(user_id)
+    user = UserRepository(db).get_by_id(claims["user_id"])
     if not user or not user.is_active:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Usuario no encontrado")
     return user

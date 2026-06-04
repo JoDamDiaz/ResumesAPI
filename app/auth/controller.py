@@ -31,7 +31,7 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
     db.refresh(user)
 
     return TokenResponse(
-        access_token=create_token(user.user_id),
+        access_token=create_token(user.user_id, user.role.nombre),
         user_id=user.user_id,
         nombre=user.nombre,
         correo=user.correo,
@@ -50,7 +50,7 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Cuenta desactivada")
 
     return TokenResponse(
-        access_token=create_token(user.user_id),
+        access_token=create_token(user.user_id, user.role.nombre),
         user_id=user.user_id,
         nombre=user.nombre,
         correo=user.correo,
