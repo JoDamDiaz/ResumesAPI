@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     APP_PORT: int = 8000
     APP_DEBUG: bool = False
 
+    JWT_SECRET: str
+    JWT_EXPIRE_HOURS: int = 24
+
     class Config:
         env_file = ".env"
 

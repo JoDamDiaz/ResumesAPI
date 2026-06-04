@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS users (
     correo    VARCHAR(255) NOT NULL,
     linkedin  VARCHAR(255) NULL,
     github    VARCHAR(255) NULL,
-    ubicacion VARCHAR(255) NULL,
+    ubicacion        VARCHAR(255) NULL,
+    hashed_password  VARCHAR(255) NULL,
+    is_active        TINYINT(1)   NOT NULL DEFAULT 1,
     PRIMARY KEY (user_id),
     UNIQUE KEY uq_users_correo (correo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
