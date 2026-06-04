@@ -255,3 +255,20 @@ INSERT INTO funcion_experiencia (experiencia_id, descripcion, orden) VALUES
 (29, 'Implementación de marcos ágiles (Scrum, Kanban, SAFe) en empresas medianas', 1),
 (29, 'Capacitación de más de 150 colaboradores en prácticas ágiles', 2),
 (29, 'Diseño de métricas de madurez ágil y seguimiento trimestral con dirección', 3);
+
+-- ── Credenciales y roles de usuarios de prueba ────────────────────────────────
+-- Roles: 1=admin  2=auditor  3=usuario (default)
+-- Patrón de contraseñas: <Nombre>1234!
+UPDATE users SET hashed_password = '$2b$12$61FVcAa9g52pC/WU5H.gHOTVpGYOGwW2ekHNd3fBQ2EziJWgAhe62', role_id = 1 WHERE correo = 'ana.garcia@ejemplo.com';      -- Ana1234!       admin
+UPDATE users SET hashed_password = '$2b$12$ieuqW/wWfw/r6cmgqmn4XOJD.XL/LN3vXjTfNo1NXM56XJwKJG08y', role_id = 2 WHERE correo = 'carlos.mendoza@ejemplo.com';   -- Carlos1234!    auditor
+UPDATE users SET hashed_password = '$2b$12$VpK3MyW037Pfh36P6X6gDOIvMXXJa.5J9bBUbRvyNSO025CeR4eZu', role_id = 3 WHERE correo = 'laura.jimenez@ejemplo.com';    -- Laura1234!     usuario
+UPDATE users SET hashed_password = '$2b$12$tAwhfJacx/lgoJHHhjFMBOlrYo2harsWDDdoVn3lEz6QeF.q9LL0K', role_id = 3 WHERE correo = 'miguel.rodriguez@ejemplo.com'; -- Miguel1234!    usuario
+UPDATE users SET hashed_password = '$2b$12$/VcDJz9Ln0/KmIc8IFIE9OGHzf4fvf2oA.AUc15.bK55fUZr3isvG', role_id = 2 WHERE correo = 'sofia.herrera@ejemplo.com';    -- Sofia1234!     auditor
+UPDATE users SET hashed_password = '$2b$12$vKW7AplItSdWRveg25L9k.6xxOi6cwNcSNUAqYJPvInBe952OSCSq', role_id = 3 WHERE correo = 'roberto.castillo@ejemplo.com'; -- Roberto1234!   usuario
+UPDATE users SET hashed_password = '$2b$12$ZRwab4g8vlA7fywZaflqf..rOqkgPwK.dUcDdHcopuritU5nF67ue', role_id = 1 WHERE correo = 'valentina.cruz@ejemplo.com';   -- Valentina1234! admin
+UPDATE users SET hashed_password = '$2b$12$AcdiWCn1X7Klt1aM.gKlAeM/B93nwSdvs3I6/q4eJT0TQvaeKGLp.', role_id = 3 WHERE correo = 'diego.morales@ejemplo.com';   -- Diego1234!     usuario
+UPDATE users SET hashed_password = '$2b$12$0h/jhmvA6svEO7dJmRAurOubmb78Ot7lG2OAQHtjQBzAk0FHHqPV.',  role_id = 3 WHERE correo = 'paola.reyes@ejemplo.com';     -- Paola1234!     usuario
+UPDATE users SET hashed_password = '$2b$12$g7mkOavkpGbctLgxhEqM6OmehEUWjZKNSBnZIRza/va8vryUA4uqK', role_id = 2 WHERE correo = 'andres.vega@ejemplo.com';      -- Andres1234!    auditor
+UPDATE users SET hashed_password = '$2b$12$lid/ZitBP8T19COmxHTQYeHmOEHFQuNpNfMgMlcfqmqkbUx1HWzO.', role_id = 3 WHERE correo = 'mariana.lopez@ejemplo.com';   -- Mariana1234!   usuario
+UPDATE users SET hashed_password = '$2b$12$0BJJZxx2jgz4M9ag7y121OiyytnRibT0z7v18H8/Br92AFD8fQKSO', role_id = 2 WHERE correo = 'fernando.sanchez@ejemplo.com'; -- Fernando1234!  auditor
+UPDATE users SET hashed_password = '$2b$12$GeYU/KS8zscMt63x1rQukuhWAw4A8YrV5cUqpRPLBs23vcdusBc6u', role_id = 3 WHERE correo = 'isabella.diaz@ejemplo.com';   -- Isabella1234!  usuario
