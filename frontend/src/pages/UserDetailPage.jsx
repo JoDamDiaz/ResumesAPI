@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getUserById, deleteUser } from '../api/users'
 import { createExperiencia, updateExperiencia, deleteExperiencia } from '../api/experiencias'
+import { useAuth } from '../context/AuthContext'
 import ExperienceCard from '../components/ExperienceCard'
 import ExperienceModal from '../components/ExperienceModal'
 import ConfirmModal from '../components/ConfirmModal'
@@ -14,6 +15,7 @@ const getInitials = name => name.split(' ').slice(0, 2).map(n => n[0]).join('').
 export default function UserDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { user: authUser } = useAuth()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -78,6 +80,17 @@ export default function UserDetailPage() {
   if (loading) return <div className="spinner" />
   if (!user)   return null
 
+  const role    = authUser?.role
+  const isAdmin   = role === 'admin'
+  const isAuditor = role === 'auditor'
+  const isOwn     = authUser?.user_id === Number(id)
+
+  const canEditUser   = isAdmin || isOwn
+  const canDeleteUser = isAdmin
+  const canAddExp     = isAdmin || (isOwn && !isAuditor)
+  const canEditExp    = isAdmin || isAuditor || isOwn
+  const canDeleteExp  = isAdmin
+
   return (
     <>
       <button className="btn btn-outline btn-sm back-btn" onClick={() => navigate('/')}>
@@ -100,8 +113,8 @@ export default function UserDetailPage() {
           </div>
         </div>
         <div className="profile-actions">
-          <button className="btn btn-outline btn-sm" onClick={() => navigate(`/usuarios/${id}/editar`)}>✏️ Editar</button>
-          <button className="btn btn-danger  btn-sm" onClick={() => setDeleteUserModal(true)}>🗑 Eliminar</button>
+          {canEditUser   && <button className="btn btn-outline btn-sm" onClick={() => navigate(`/usuarios/${id}/editar`)}>✏️ Editar</button>}
+          {canDeleteUser && <button className="btn btn-danger  btn-sm" onClick={() => setDeleteUserModal(true)}>🗑 Eliminar</button>}
         </div>
       </div>
 
@@ -110,7 +123,7 @@ export default function UserDetailPage() {
         <h2 className="section-title">
           Experiencia laboral <span className="badge badge-gray">{user.experiencias.length}</span>
         </h2>
-        <button className="btn btn-primary btn-sm" onClick={() => setExpModal('create')}>+ Añadir</button>
+        {canAddExp && <button className="btn btn-primary btn-sm" onClick={() => setExpModal('create')}>+ Añadir</button>}
       </div>
 
       {user.experiencias.length === 0 && (
@@ -125,9 +138,11 @@ export default function UserDetailPage() {
           <ExperienceCard
             key={exp.id}
             experiencia={exp}
-            onEdit={e => setExpModal(e)}
-            onDelete={e => setDeleteExpModal(e)}
+            onEdit={canEditExp ? (e => setExpModal(e)) : null}
+            onDelete={canDeleteExp ? (e => setDeleteExpModal(e)) : null}
             onRefresh={load}
+            canAddFuncion={canAddExp}
+            canDeleteFuncion={canDeleteExp}
           />
         ))}
       </div>

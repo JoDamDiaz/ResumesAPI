@@ -38,7 +38,11 @@ function AppRoutes() {
 
       {/* Rutas protegidas */}
       <Route element={user ? <AuthenticatedLayout /> : <Navigate to="/login" replace />}>
-        <Route path="/"                    element={<HomePage />} />
+        <Route path="/" element={
+          user?.role === 'usuario'
+            ? <Navigate to={`/usuarios/${user.user_id}`} replace />
+            : <HomePage />
+        } />
         <Route path="/usuarios/nuevo"      element={<UserFormPage />} />
         <Route path="/usuarios/:id"        element={<UserDetailPage />} />
         <Route path="/usuarios/:id/editar" element={<UserFormPage />} />

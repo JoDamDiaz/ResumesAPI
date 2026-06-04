@@ -22,3 +22,4 @@ class TokenResponse(BaseModel):
     user_id: int
     nombre: str
     correo: str
+    role: str = "usuario"

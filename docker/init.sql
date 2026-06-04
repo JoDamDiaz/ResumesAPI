@@ -5,6 +5,19 @@ CREATE DATABASE IF NOT EXISTS resumes_db
 
 USE resumes_db;
 
+-- ── Roles ─────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS roles (
+    role_id INT          NOT NULL AUTO_INCREMENT,
+    nombre  VARCHAR(50)  NOT NULL,
+    PRIMARY KEY (role_id),
+    UNIQUE KEY uq_roles_nombre (nombre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO roles (role_id, nombre) VALUES
+(1, 'admin'),
+(2, 'auditor'),
+(3, 'usuario');
+
 -- ── Tabla principal de usuarios ───────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
     user_id   INT          NOT NULL AUTO_INCREMENT,
@@ -16,8 +29,10 @@ CREATE TABLE IF NOT EXISTS users (
     ubicacion        VARCHAR(255) NULL,
     hashed_password  VARCHAR(255) NULL,
     is_active        TINYINT(1)   NOT NULL DEFAULT 1,
+    role_id          INT          NOT NULL DEFAULT 3,
     PRIMARY KEY (user_id),
-    UNIQUE KEY uq_users_correo (correo)
+    UNIQUE KEY uq_users_correo (correo),
+    CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES roles (role_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── Una fila por empleo (normalización: 1 user → N experiencias) ──────────────
@@ -44,7 +59,7 @@ CREATE TABLE IF NOT EXISTS funcion_experiencia (
         REFERENCES experiencia_user (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ── Datos de prueba ────────────────────────────────────────────────────────────
+-- ── Datos de prueba (role_id DEFAULT 3 = usuario) ─────────────────────────────
 INSERT INTO users (nombre, telefono, correo, linkedin, github, ubicacion) VALUES
 ('Ana García López',     '+52 55 1234 5678', 'ana.garcia@ejemplo.com',     'linkedin.com/in/anagarcia',     'github.com/anagarcia',     'Ciudad de México, MX'),
 ('Carlos Mendoza Ruiz',  '+52 33 9876 5432', 'carlos.mendoza@ejemplo.com',  'linkedin.com/in/carlosmendoza', 'github.com/carlosmendoza', 'Guadalajara, MX'),

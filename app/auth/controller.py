@@ -24,6 +24,7 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
         ubicacion=data.ubicacion,
         linkedin=data.linkedin,
         github=data.github,
+        role_id=3,  # usuario por defecto al registrarse
     )
     db.add(user)
     db.commit()
@@ -34,6 +35,7 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
         user_id=user.user_id,
         nombre=user.nombre,
         correo=user.correo,
+        role=user.role.nombre,
     )
 
 
@@ -52,14 +54,16 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         user_id=user.user_id,
         nombre=user.nombre,
         correo=user.correo,
+        role=user.role.nombre,
     )
 
 
 @router.get("/me", response_model=TokenResponse)
 def me(current_user: User = Depends(get_current_user)):
     return TokenResponse(
-        access_token="",   # no re-emitimos el token aquí
+        access_token="",
         user_id=current_user.user_id,
         nombre=current_user.nombre,
         correo=current_user.correo,
+        role=current_user.role.nombre,
     )

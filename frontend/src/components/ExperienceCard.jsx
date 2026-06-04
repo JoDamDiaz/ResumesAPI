@@ -9,7 +9,7 @@ function formatDate(d) {
   return `${months[+m - 1]} ${y}`
 }
 
-export default function ExperienceCard({ experiencia, onEdit, onDelete, onRefresh }) {
+export default function ExperienceCard({ experiencia, onEdit, onDelete, onRefresh, canAddFuncion = true, canDeleteFuncion = true }) {
   const [newFuncion, setNewFuncion] = useState('')
   const [addingFn, setAddingFn] = useState(false)
   const [showAddFn, setShowAddFn] = useState(false)
@@ -48,8 +48,8 @@ export default function ExperienceCard({ experiencia, onEdit, onDelete, onRefres
           </div>
         </div>
         <div className="experience-actions">
-          <button className="btn btn-outline btn-sm" onClick={() => onEdit(experiencia)}>✏️ Editar</button>
-          <button className="btn btn-danger btn-sm" onClick={() => onDelete(experiencia)}>🗑</button>
+          {onEdit   && <button className="btn btn-outline btn-sm" onClick={() => onEdit(experiencia)}>✏️ Editar</button>}
+          {onDelete && <button className="btn btn-danger btn-sm" onClick={() => onDelete(experiencia)}>🗑</button>}
         </div>
       </div>
 
@@ -58,15 +58,17 @@ export default function ExperienceCard({ experiencia, onEdit, onDelete, onRefres
           {experiencia.funciones.map(fn => (
             <li key={fn.id} className="funcion-item">
               <span>{fn.descripcion}</span>
-              <div className="funcion-item-actions">
-                <button className="btn-icon btn-sm" title="Eliminar función" onClick={() => handleDeleteFuncion(fn.id)}>✕</button>
-              </div>
+              {canDeleteFuncion && (
+                <div className="funcion-item-actions">
+                  <button className="btn-icon btn-sm" title="Eliminar función" onClick={() => handleDeleteFuncion(fn.id)}>✕</button>
+                </div>
+              )}
             </li>
           ))}
         </ul>
       )}
 
-      {showAddFn ? (
+      {canAddFuncion && (showAddFn ? (
         <div className="add-funcion-row">
           <input
             autoFocus
@@ -84,7 +86,7 @@ export default function ExperienceCard({ experiencia, onEdit, onDelete, onRefres
         <button className="btn btn-ghost btn-sm mt-8" onClick={() => setShowAddFn(true)}>
           + Añadir función
         </button>
-      )}
+      ))}
     </div>
   )
 }

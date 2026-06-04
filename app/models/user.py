@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -12,10 +12,12 @@ class User(Base):
     correo = Column(String(255), unique=True, nullable=False)
     linkedin = Column(String(255), nullable=True)
     github = Column(String(255), nullable=True)
-    ubicacion        = Column(String(255), nullable=True)
-    hashed_password  = Column(String(255), nullable=True)
-    is_active        = Column(Boolean, default=True, nullable=False)
+    ubicacion       = Column(String(255), nullable=True)
+    hashed_password = Column(String(255), nullable=True)
+    is_active       = Column(Boolean, default=True, nullable=False)
+    role_id         = Column(Integer, ForeignKey("roles.role_id"), nullable=False, default=3)
 
+    role = relationship("Role", back_populates="users")
     experiencias = relationship(
         "ExperienciaUser",
         back_populates="user",

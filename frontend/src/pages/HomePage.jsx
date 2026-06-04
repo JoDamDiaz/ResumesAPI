@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getUsers } from '../api/users'
+import { useAuth } from '../context/AuthContext'
 import UserCard from '../components/UserCard'
 
 export default function HomePage() {
@@ -10,6 +11,8 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { user: authUser } = useAuth()
+  const canCreate = authUser?.role !== 'auditor'
 
   useEffect(() => {
     getUsers()
@@ -36,9 +39,11 @@ export default function HomePage() {
             onChange={e => setQuery(e.target.value)}
           />
         </div>
-        <button className="btn btn-primary" onClick={() => navigate('/usuarios/nuevo')}>
-          + Nuevo usuario
-        </button>
+        {canCreate && (
+          <button className="btn btn-primary" onClick={() => navigate('/usuarios/nuevo')}>
+            + Nuevo usuario
+          </button>
+        )}
       </div>
 
       {loading && <div className="spinner" />}

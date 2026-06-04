@@ -37,6 +37,7 @@ export default function Navbar() {
               {getInitials(user.nombre)}
             </div>
             <span className="navbar-username">{user.nombre.split(' ')[0]}</span>
+            <span className={`role-badge role-${user.role}`}>{user.role}</span>
             <button className="btn btn-ghost btn-sm" onClick={handleLogout} title="Cerrar sesión">
               Salir →
             </button>
