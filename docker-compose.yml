@@ -1,4 +1,15 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#  Resumes API · docker-compose
+#
+#  Servicios:
+#    🗄  mysql    → base de datos        localhost:3306
+#    ⚙️  api      → FastAPI / backend    localhost:8000  (docs: /docs)
+#    🖥  frontend → React / Vite         localhost:5173
+# ═══════════════════════════════════════════════════════════════════════════════
+
 services:
+
+  # ── 🗄 Base de datos ──────────────────────────────────────────────────────────
   mysql:
     image: mysql:8.0
     container_name: resumes_mysql
@@ -6,9 +17,9 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: root_pass
-      MYSQL_DATABASE: resumes_db
-      MYSQL_USER: resumes_user
-      MYSQL_PASSWORD: resumes_pass
+      MYSQL_DATABASE:      resumes_db
+      MYSQL_USER:          resumes_user
+      MYSQL_PASSWORD:      resumes_pass
     ports:
       - "3306:3306"
     volumes:
@@ -20,8 +31,11 @@ services:
       timeout: 5s
       retries: 5
 
+  # ── ⚙️ Backend · FastAPI ──────────────────────────────────────────────────────
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: resumes_api
     restart: unless-stopped
     env_file: .env
@@ -32,6 +46,20 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+  # ── 🖥 Frontend · React + Vite ────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: resumes_frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_TARGET: http://api:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
 
 volumes:
   mysql_data:
